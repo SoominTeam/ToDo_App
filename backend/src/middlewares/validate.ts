@@ -12,7 +12,7 @@ export const validate = (schema: any) => {
         const firstError = error.issues[0]; 
         const code = firstError.message;
         
-        if (['TITLE_REQUESTED', 'TITLE_TOO_LONG', 'INVALID_INPUT'].includes(code)) {
+        if (['TITLE_REQUIRED', 'TITLE_TOO_LONG', 'INVALID_INPUT'].includes(code)) {
           return next(new AppError(400, code));
         }
         return next(new AppError(400, 'INVALID_INPUT'));
