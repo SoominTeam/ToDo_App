@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* CHILL WHITE Theme (Light Mode) */
+  --bg: #FFF9FA;
+  --surface: #FFFFFF;
+  --border: #F3D9DE;
+  --text: #2A1A1E;
+  --text-muted: #7A5C63;
+  --primary: #FD1743; /* TRUE PINK */
+  --primary-hover: #E0113A;
+  --primary-soft: #FFE3E8;
+  --on-primary: #FFFFFF;
+}
+
+.dark {
+  /* Dark Mode */
+  --bg: #160E10;
+  --surface: #211619;
+  --border: #3A2A2E;
+  --text: #FFF9FA;
+  --text-muted: #C9A9B0;
+  --primary: #FF4D6D;
+  --primary-hover: #FF6B84;
+  --primary-soft: #3A1620;
+  --on-primary: #160E10;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* تنظیم فونت بر اساس زبان */
+html[lang="fa"] body {
+  font-family: var(--font-vazirmatn), sans-serif;
+}
+
+html[lang="en"] body {
+  font-family: var(--font-minako), var(--font-vazirmatn), sans-serif;
+}
