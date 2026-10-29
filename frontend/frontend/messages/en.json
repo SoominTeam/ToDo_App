@@ -1,0 +1,37 @@
+{
+  "app": {
+    "title": "Task Management",
+    "subtitle": "Sprint 1 — Software Engineering Project"
+  },
+  "task": {
+    "add": "Add New Task",
+    "title": "Task Title",
+    "titlePlaceholder": "Enter task title...",
+    "description": "Description (optional)",
+    "descriptionPlaceholder": "More details about the task...",
+    "submit": "➕ Add Task",
+    "list": "Task List",
+    "id": "ID",
+    "titleCol": "Title",
+    "descriptionCol": "Description",
+    "status": "Status",
+    "createdAt": "Created At",
+    "statusTodo": "TODO",
+    "empty": "Nothing left to dust. You're all done!",
+    "success": "Task added successfully ✓"
+  },
+  "errors": {
+    "TITLE_REQUIRED": "Task title cannot be empty.",
+    "TITLE_TOO_LONG": "Task title must not exceed 100 characters.",
+    "INVALID_INPUT": "Invalid input data.",
+    "SERVER_ERROR": "Server error. Please try again."
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "language": {
+    "fa": "فارسی",
+    "en": "English"
+  }
+}
