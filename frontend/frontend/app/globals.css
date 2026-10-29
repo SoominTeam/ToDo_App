@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
   /* CHILL WHITE Theme (Light Mode) */
   --bg: #FFF9FA;
@@ -13,6 +14,9 @@
   --primary-hover: #E0113A;
   --primary-soft: #FFE3E8;
   --on-primary: #FFFFFF;
+    --warning: #FBBF24;
+  --warning-bg: #FFF1D6;
+
 }
 
 .dark {
@@ -26,6 +30,8 @@
   --primary-hover: #FF6B84;
   --primary-soft: #3A1620;
   --on-primary: #160E10;
+    --warning: #B45309;
+  --warning-bg: #3A2C0B;
 }
 
 body {
@@ -42,3 +48,15 @@ html[lang="fa"] body {
 html[lang="en"] body {
   font-family: var(--font-minako), var(--font-vazirmatn), sans-serif;
 }
+
+/* اصلاح جهت placeholder بر اساس زبان صفحه */
+html[lang="fa"] input::placeholder,
+html[lang="fa"] textarea::placeholder {
+  text-align: right;
+}
+
+html[lang="en"] input::placeholder,
+html[lang="en"] textarea::placeholder {
+  text-align: left;
+}
+
