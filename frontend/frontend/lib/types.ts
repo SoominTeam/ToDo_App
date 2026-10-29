@@ -1,6 +1,6 @@
 // اینترفیس Task - دقیقاً مطابق API Contract
 export interface Task {
-  id: string;
+  id: number;
   title: string;
   description?: string;
   status: 'TODO'; // در اسپرینت ۱ فقط این مقدار
