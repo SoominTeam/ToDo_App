@@ -15,3 +15,4 @@ npm install
 تمامی مستندات فنی پروژه در پوشه `docs` قرار دارد:
 - (./docs/01-api-contract.md)[قرارداد API]
 - (./docs/02-error-codes.md)[کد های خطا]
+- (./docs/05-scrum-reports.md)[گزارشات و مستندات اسکرام]
