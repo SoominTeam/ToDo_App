@@ -18,17 +18,18 @@ let mockTasks: Task[] = [
   },
 ];
 
-// شبیه‌سازی تاخیر شبکه (برای تست Loading State)
+// شمارنده برای تولید ID های متوالی
+let nextId = 3;
+
+// شبیه‌سازی تاخیر شبکه
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
- * دریافت تمام وظایف (جدیدترین در ابتدا)
- * مطابق: GET /api/tasks -> 200 -> Task[]
+ * دریافت تمام وظایف (مرتب‌سازی بر اساس ID صعودی)
  */
 export async function getTasks(): Promise<Task[]> {
   await delay(800);
   
-  // مرتب‌سازی بر اساس ID (صعودی) - قدیمی‌ترین اول
   return [...mockTasks].sort(
     (a, b) => parseInt(a.id) - parseInt(b.id)
   );
@@ -36,11 +37,7 @@ export async function getTasks(): Promise<Task[]> {
 
 /**
  * ایجاد وظیفه جدید
- * مطابق: POST /api/tasks -> 201 -> Task
  */
-// شمارنده برای تولید ID های متوالی
-let nextId = 3; // چون ۲ وظیفه نمونه داریم
-
 export async function createTask(
   title: string,
   description?: string
@@ -59,4 +56,27 @@ export async function createTask(
   mockTasks.unshift(newTask);
   
   return newTask;
+}
+
+/**
+ * به‌روزرسانی وضعیت وظیفه (جدید)
+ */
+export async function updateTaskStatus(
+  taskId: string,
+  newStatus: 'TODO' | 'DONE' | 'EXPIRED'
+): Promise<Task> {
+  await delay(400);
+  
+  const taskIndex = mockTasks.findIndex(task => task.id === taskId);
+  
+  if (taskIndex === -1) {
+    throw new Error('Task not found');
+  }
+  
+  mockTasks[taskIndex] = {
+    ...mockTasks[taskIndex],
+    status: newStatus,
+  };
+  
+  return mockTasks[taskIndex];
 }
