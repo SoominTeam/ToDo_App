@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createTask } from '@/lib/api';
 import { TASK_LIMITS } from '@/lib/types';
+import { useTextDirection } from '@/hooks/useTextDirection';
 
 export default function AddTaskForm() {
   const t = useTranslations();
@@ -14,27 +15,25 @@ export default function AddTaskForm() {
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
 
+  // ✅ همه هوک‌ها باید در سطح بالای کامپوننت و قبل از هر شرطی صدا زده شوند
+  const titleDirection = useTextDirection(title);
+  const descDirection = useTextDirection(description);
+  const errorDirection = useTextDirection(error); // ✅ اصلاح شده: هوک به بالا منتقل شد
+
   const mutation = useMutation({
     mutationFn: () => createTask(title.trim(), description.trim()),
     onSuccess: () => {
-      // به‌روزرسانی خودکار لیست وظایف پس از ثبت موفق
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      // پاک کردن فرم و خطاها
       setTitle('');
       setDescription('');
       setError('');
     },
     onError: (err: any) => {
-      // دریافت کد خطا از بک‌اند (مثلاً "TITLE_REQUIRED")
       const code = err?.response?.data?.error || err?.message || 'SERVER_ERROR';
-      
-      // تبدیل کد خطا به پیام ترجمه‌شده از فایل messages
-      // اگر کد ناشناخته بود، پیام UNKNOWN نمایش داده می‌شود
       const translatedMessage = t.raw(`errors.${code}`);
       const errorMessage = typeof translatedMessage === 'string' 
         ? translatedMessage 
         : t('errors.UNKNOWN');
-        
       setError(errorMessage);
     },
   });
@@ -46,7 +45,6 @@ export default function AddTaskForm() {
     const trimmedTitle = title.trim();
     const trimmedDesc = description.trim();
 
-    // اعتبارسنجی سمت کلاینت (Client-side Validation)
     if (!trimmedTitle) {
       setError(t('errors.TITLE_REQUIRED'));
       return;
@@ -62,7 +60,6 @@ export default function AddTaskForm() {
       return;
     }
 
-    // ارسال به سرور (فعلاً Mock API)
     mutation.mutate();
   };
 
@@ -82,9 +79,13 @@ export default function AddTaskForm() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder={t('task.form.titlePlaceholder')}
-            dir="auto"
+            dir={titleDirection}
             maxLength={200}
-            className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+            className={`w-full px-4 py-2 bg-background border border-border rounded-lg text-text placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors ${
+              titleDirection === 'rtl' 
+                ? 'font-[family-name:var(--font-vazirmatn)]' 
+                : 'font-[family-name:var(--font-minako)]'
+            }`}
             disabled={mutation.isPending}
           />
         </div>
@@ -99,18 +100,35 @@ export default function AddTaskForm() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder={t('task.form.descriptionPlaceholder')}
-            dir="auto"
+            dir={descDirection}
             rows={3}
             maxLength={500}
-            className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none"
+            className={`w-full px-4 py-2 bg-background border border-border rounded-lg text-text placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none ${
+              descDirection === 'rtl' 
+                ? 'font-[family-name:var(--font-vazirmatn)]' 
+                : 'font-[family-name:var(--font-minako)]'
+            }`}
             disabled={mutation.isPending}
           />
         </div>
 
         {/* نمایش پیام خطا */}
         {error && (
-          <div className="bg-error/10 border border-error text-error px-4 py-3 rounded-lg text-sm flex items-center gap-2" dir="auto">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="rtl:rotate-180">
+          <div 
+            className="bg-error/10 border border-error text-error px-4 py-3 rounded-lg text-sm flex items-center gap-2"
+            dir={errorDirection} // ✅ اصلاح شده: استفاده از متغیر به جای صدا زدن هوک
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
               <circle cx="12" cy="12" r="10" />
               <line x1="12" y1="8" x2="12" y2="12" />
               <line x1="12" y1="16" x2="12.01" y2="16" />
