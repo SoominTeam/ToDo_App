@@ -1,6 +1,6 @@
 // اینترفیس Task - دقیقاً مطابق API Contract
 export interface Task {
-  id: string;
+  id: number;
   title: string;
   description?: string;
   status: 'TODO' | 'DONE' | 'EXPIRED'; // اضافه شدن DONE و EXPIRED
