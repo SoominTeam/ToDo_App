@@ -3,14 +3,14 @@ export interface Task {
   id: number;
   title: string;
   description?: string;
-  status: 'TODO'; // در اسپرینت ۱ فقط این مقدار
-  createdAt: string; // ISO 8601 format
+  status: 'TODO' | 'DONE' | 'EXPIRED'; // اضافه شدن DONE و EXPIRED
+  createdAt: string;
 }
 
 // محدودیت‌های اعتبارسنجی (مطابق PDF)
 export const TASK_LIMITS = {
   TITLE_MIN: 1,
-  TITLE_MAX: 100, // بعد از trim
+  TITLE_MAX: 100,
   DESCRIPTION_MAX: 500,
 } as const;
 
@@ -23,3 +23,17 @@ export const ERROR_CODES = {
 } as const;
 
 export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];
+
+// ترتیب چرخش وضعیت‌ها
+export const STATUS_CYCLE: Array<'TODO' | 'DONE' | 'EXPIRED'> = [
+  'TODO',
+  'DONE',
+  'EXPIRED',
+];
+
+// دریافت وضعیت بعدی در چرخه
+export function getNextStatus(currentStatus: 'TODO' | 'DONE' | 'EXPIRED'): 'TODO' | 'DONE' | 'EXPIRED' {
+  const currentIndex = STATUS_CYCLE.indexOf(currentStatus);
+  const nextIndex = (currentIndex + 1) % STATUS_CYCLE.length;
+  return STATUS_CYCLE[nextIndex];
+}

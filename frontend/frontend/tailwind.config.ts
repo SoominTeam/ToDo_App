@@ -27,52 +27,59 @@ const config: Config = {
           DEFAULT: "var(--warning)",
           bg: "var(--warning-bg)",
         },
+        success: {
+          DEFAULT: "var(--success)",
+          bg: "var(--success-bg)",
+        },
+        error: {
+          DEFAULT: "var(--error)",
+          bg: "var(--error-bg)",
+        },
       },
-      // ✨ انیمیشن موشک کاغذی واقعی
-keyframes: {
-  'neon-star': {
-    '0%': {
-      transform: 'translateY(0) scale(0.8)',
-      opacity: '0',
-    },
-    '10%': {
-      opacity: '1',
-      transform: 'translateY(10vh) scale(1)',
-    },
-    '90%': {
-      opacity: '1',
-    },
-    '100%': {
-      transform: 'translateY(110vh) scale(0.6)',
-      opacity: '0',
-    },
-  },
-  'twinkle-core': {
-    '0%, 100%': {
-      transform: 'scale(1)',
-      opacity: '0.8',
-    },
-    '50%': {
-      transform: 'scale(1.3)',
-      opacity: '1',
-    },
-  },
-  'pulse-slow': {
-    '0%, 100%': {
-      opacity: '0.6',
-      transform: 'scale(1)',
-    },
-    '50%': {
-      opacity: '1',
-      transform: 'scale(1.1)',
-    },
-  },
-},
-animation: {
-  'neon-star': 'neon-star linear infinite',
-  'twinkle-core': 'twinkle-core 1.5s ease-in-out infinite',
-  'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
-},
+      keyframes: {
+        'neon-star': {
+          '0%': {
+            transform: 'translateY(0) scale(0.8)',
+            opacity: '0',
+          },
+          '10%': {
+            opacity: '1',
+            transform: 'translateY(10vh) scale(1)',
+          },
+          '90%': {
+            opacity: '1',
+          },
+          '100%': {
+            transform: 'translateY(110vh) scale(0.6)',
+            opacity: '0',
+          },
+        },
+        'twinkle-core': {
+          '0%, 100%': {
+            transform: 'scale(1)',
+            opacity: '0.8',
+          },
+          '50%': {
+            transform: 'scale(1.3)',
+            opacity: '1',
+          },
+        },
+        'pulse-slow': {
+          '0%, 100%': {
+            opacity: '0.6',
+            transform: 'scale(1)',
+          },
+          '50%': {
+            opacity: '1',
+            transform: 'scale(1.1)',
+          },
+        },
+      },
+      animation: {
+        'neon-star': 'neon-star linear infinite',
+        'twinkle-core': 'twinkle-core 1.5s ease-in-out infinite',
+        'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
+      },
     },
   },
   plugins: [],

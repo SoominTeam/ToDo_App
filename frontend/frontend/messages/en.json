@@ -29,8 +29,11 @@
       "createdAt": "Created At"
     },
     "status": {
-      "TODO": "TODO"
+      "TODO": "TODO",
+      "DONE": "DONE",
+      "EXPIRED": "EXPIRED"
     },
+    "statusHint": "Click to change status",
     "noDescription": "—",
     "success": "Task added successfully ✓"
   },

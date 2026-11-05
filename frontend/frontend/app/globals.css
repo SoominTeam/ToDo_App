@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
   /* CHILL WHITE Theme (Light Mode) */
   --bg: #FFF9FA;
@@ -14,9 +13,12 @@
   --primary-hover: #E0113A;
   --primary-soft: #FFE3E8;
   --on-primary: #FFFFFF;
-    --warning: #FBBF24;
+  --warning: #FBBF24;
   --warning-bg: #FFF1D6;
-
+  --success: #4ADE80;
+  --success-bg: #E3F6EA;
+  --error: #F87171;
+  --error-bg: #FDE8E6;
 }
 
 .dark {
@@ -30,8 +32,12 @@
   --primary-hover: #FF6B84;
   --primary-soft: #3A1620;
   --on-primary: #160E10;
-    --warning: #B45309;
+  --warning: #B45309;
   --warning-bg: #3A2C0B;
+  --success: #1F9D55;
+  --success-bg: #12301F;
+  --error: #B91C1C;
+  --error-bg: #3B1618;
 }
 
 body {
@@ -40,7 +46,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* تنظیم فونت بر اساس زبان */
+/* تنظیم فونت بر اساس زبان (دقیقاً مثل نسخه اصلی رفیقت) */
 html[lang="fa"] body {
   font-family: var(--font-vazirmatn), sans-serif;
 }
@@ -59,4 +65,3 @@ html[lang="en"] input::placeholder,
 html[lang="en"] textarea::placeholder {
   text-align: left;
 }
-
