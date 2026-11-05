@@ -21,7 +21,6 @@ export async function createTask(title: string, description?: string): Promise<T
   return res.json();
 }
 
-// ✅ اتصال واقعی به بک‌اند (حذف کش لوکال)
 export async function updateTaskStatus(
   taskId: number,
   newStatus: 'TODO' | 'DONE' | 'EXPIRED'
