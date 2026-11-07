@@ -1,23 +1,27 @@
-import { Request, Response, NextFunction } from 'express';
-import { ZodError } from 'zod';
-import { AppError } from './errorHandler';
+import { Request, Response, NextFunction } from "express";
+import { ZodType } from "zod";
+import { AppError } from "./errorHandler";
 
-export const validate = (schema: any) => {
+const KNOWN_CODES = ["TITLE_REQUIRED", "TITLE_TOO_LONG", "INVALID_INPUT"];
+
+export const validate = (
+  schema: ZodType,
+  target: "body" | "params" = "body",
+) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    try {
-      schema.parse(req.body);
-      next();
-    } catch (error) {
-      if (error instanceof ZodError) {
-        const firstError = error.issues[0]; 
-        const code = firstError.message;
-        
-        if (['TITLE_REQUIRED', 'TITLE_TOO_LONG', 'INVALID_INPUT'].includes(code)) {
-          return next(new AppError(400, code));
-        }
-        return next(new AppError(400, 'INVALID_INPUT'));
-      }
-      next(error);
+    const input = target === "body" ? (req.body ?? {}) : req.params;
+    const result = schema.safeParse(input);
+
+    if (!result.success) {
+      const code = result.error.issues[0]?.message;
+      return next(
+        new AppError(400, KNOWN_CODES.includes(code) ? code : "INVALID_INPUT"),
+      );
     }
+
+    if (target === "body") {
+      req.body = result.data;
+    }
+    next();
   };
 };

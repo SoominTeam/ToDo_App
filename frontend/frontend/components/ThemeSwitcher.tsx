@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export default function ThemeSwitcher() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
     if (savedTheme) {
       setTheme(savedTheme);
-      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+      document.documentElement.classList.toggle("dark", savedTheme === "dark");
     }
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
+    const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
   };
 
   return (
@@ -26,8 +26,7 @@ export default function ThemeSwitcher() {
       className="p-2 rounded-lg bg-surface border border-border hover:bg-primary-soft transition-colors"
       aria-label="Toggle theme"
     >
-      {theme === 'light' ? (
-        // آیکون ماه (برای رفتن به dark mode)
+      {theme === "light" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -43,7 +42,6 @@ export default function ThemeSwitcher() {
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       ) : (
-        // آیکون خورشید (برای رفتن به light mode)
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

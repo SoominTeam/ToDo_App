@@ -41,6 +41,7 @@
     "TITLE_REQUIRED": "Task title cannot be empty.",
     "TITLE_TOO_LONG": "Task title must not exceed 100 characters.",
     "INVALID_INPUT": "Invalid input data.",
+    "TASK_NOT_FOUND": "Task not found. It may have been removed.",
     "SERVER_ERROR": "Server error. Please try again later.",
     "UNKNOWN": "An unknown error occurred."
   },
