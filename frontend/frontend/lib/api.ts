@@ -44,3 +44,33 @@ export async function updateTaskStatus(
   }
   return res.json();
 }
+
+
+export async function updateTask(
+  taskId: number,
+  data: { title: string; description?: string },
+): Promise<Task> {
+  const res = await fetch(`${API_BASE_URL}/${taskId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw { response: { data: errorData } };
+  }
+  return res.json();
+}
+
+
+export async function deleteTask(taskId: number): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/${taskId}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({ error: "SERVER_ERROR" }));
+    throw { response: { data: errorData } };
+  }
+}
