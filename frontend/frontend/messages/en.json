@@ -26,11 +26,34 @@
       "title": "Title",
       "description": "Description",
       "status": "Status",
-      "createdAt": "Created At"
+      "createdAt": "Created At",
+      "edit": "Edit",
+      "delete": "Delete",
+      "actions": "Edit"
+    },
+    "edit": {
+      "heading": "Edit Task",
+      "buttonTooltip": "Edit task",
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    "delete": {
+      "heading": "Delete Task",
+      "message": "Are you sure you want to delete this task? This action cannot be undone.",
+      "confirm": "Yes, I'm sure",
+      "cancel": "No, cancel",
+      "buttonTooltip": "Delete task",
+      "deleting": "Deleting..."
     },
     "status": {
-      "TODO": "TODO"
+      "TODO": "TODO",
+      "DONE": "DONE",
+      "EXPIRED": "EXPIRED"
     },
+    "selectStatus": "Select task status:",
+    "statusHint": "Click to change status",
     "noDescription": "—",
     "success": "Task added successfully ✓"
   },
@@ -38,6 +61,7 @@
     "TITLE_REQUIRED": "Task title cannot be empty.",
     "TITLE_TOO_LONG": "Task title must not exceed 100 characters.",
     "INVALID_INPUT": "Invalid input data.",
+    "TASK_NOT_FOUND": "Task not found. It may have been removed.",
     "SERVER_ERROR": "Server error. Please try again later.",
     "UNKNOWN": "An unknown error occurred."
   },

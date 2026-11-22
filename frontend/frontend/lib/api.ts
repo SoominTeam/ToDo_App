@@ -1,40 +1,76 @@
-import { Task } from './types';
+import { Task } from "./types";
 
-const API_BASE_URL = 'http://localhost:4000/api/tasks';
+// آدرس بک‌اند از متغیر محیطی خوانده می‌شود (فایل .env.local در پوشه‌ی فرانت‌اند)
+const API_URL = (
+  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000"
+).replace(/\/+$/, "");
+const API_BASE_URL = `${API_URL}/api/tasks`;
 
-/**
- * دریافت تمام وظایف (جدیدترین در ابتدا)
- */
 export async function getTasks(): Promise<Task[]> {
   const res = await fetch(API_BASE_URL);
-  
-  if (!res.ok) {
-    throw new Error('SERVER_ERROR');
-  }
-  
+  if (!res.ok) throw new Error("SERVER_ERROR");
   return res.json();
 }
 
-/**
- * ایجاد وظیفه جدید
- */
 export async function createTask(
   title: string,
-  description?: string
+  description?: string,
 ): Promise<Task> {
   const res = await fetch(API_BASE_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title, description }),
+  });
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw { response: { data: errorData } };
+  }
+  return res.json();
+}
+
+export async function updateTaskStatus(
+  taskId: number,
+  newStatus: "TODO" | "DONE" | "EXPIRED",
+): Promise<Task> {
+  const res = await fetch(`${API_BASE_URL}/${taskId}/status`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status: newStatus }),
   });
 
   if (!res.ok) {
     const errorData = await res.json();
-    // خطای بک‌اند رو پرتاب می‌کنیم تا AddTaskForm بتونه با TanStack Query بگیره
-    throw { response: { data: errorData } }; 
+    throw { response: { data: errorData } };
   }
-
   return res.json();
+}
+
+
+export async function updateTask(
+  taskId: number,
+  data: { title: string; description?: string },
+): Promise<Task> {
+  const res = await fetch(`${API_BASE_URL}/${taskId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw { response: { data: errorData } };
+  }
+  return res.json();
+}
+
+
+export async function deleteTask(taskId: number): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/${taskId}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({ error: "SERVER_ERROR" }));
+    throw { response: { data: errorData } };
+  }
 }
