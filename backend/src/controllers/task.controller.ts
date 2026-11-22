@@ -62,3 +62,65 @@ export const updateTaskStatus = async (
     next(error);
   }
 };
+
+export const updateTask = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const { title, description } = req.body;
+    const taskId = Number(id);
+
+    const existingTask = await prisma.task.findUnique({
+      where: { id: taskId },
+    });
+
+    if (!existingTask) {
+      return next(new AppError(404, "TASK_NOT_FOUND"));
+    }
+
+    // به‌روزرسانی عنوان، توضیحات و زمان ویرایش (createdAt = now)
+    const updatedTask = await prisma.task.update({
+      where: { id: taskId },
+      data: {
+        title,
+        description,
+        createdAt: new Date(),
+      },
+    });
+
+    res.json(updatedTask);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteTask = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const taskId = Number(id);
+
+    const existingTask = await prisma.task.findUnique({
+      where: { id: taskId },
+    });
+
+    if (!existingTask) {
+      return next(new AppError(404, "TASK_NOT_FOUND"));
+    }
+
+    // حذف قطعی، دائم و کامل از پایگاه داده (Hard Delete)
+    await prisma.task.delete({
+      where: { id: taskId },
+    });
+
+    res.json({ message: "TASK_DELETED", id: taskId });
+  } catch (error) {
+    next(error);
+  }
+};
