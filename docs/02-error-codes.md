@@ -56,3 +56,4 @@
   3. بررسی وجود رکورد در دیتابیس → `404 TASK_NOT_FOUND`
 - در `DELETE` هیچ بدنه‌ای ارسال نمی‌شود.
 - ترجمه‌ی کدهای خطا در فرانت‌اند از کلیدهای `errors.<CODE>` در `messages/fa.json` و `messages/en.json` خوانده می‌شود.
+- هنگام دریافت خطای `404 TASK_NOT_FOUND` در `StatusDropdown`، `EditTaskModal` یا `DeleteTaskModal`، فرانت‌اند علاوه بر نمایش پیام خطا، `queryClient.invalidateQueries({ queryKey: ["tasks"] })` را اجرا می‌کند تا لیست جدول با وضعیت واقعی دیتابیس همگام شود.

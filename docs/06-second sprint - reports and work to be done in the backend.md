@@ -33,16 +33,17 @@
 
 **فعالیت‌های فنی (فرانت‌اند):**
 - ساخت `StatusDropdown.tsx` با طراحی اختصاصی و پشتیبانی از دو زبان.
-- ساخت `EditTaskModal.tsx` با اعتبارسنجی کلاینت و شمارنده‌ی کاراکتر.
-- ساخت `DeleteTaskModal.tsx` با تأییدیه‌ی حذف.
+- ساخت `EditTaskModal.tsx` با اعتبارسنجی کلاینت، شمارنده‌ی کاراکتر و به‌روزرسانی درجا بدون جابه‌جایی ردیف.
+- ساخت `DeleteTaskModal.tsx` با تأییدیه‌ی حذف و کاهش خودکار شمارنده‌ی لیست.
 - افزودن `updateTask` و `deleteTask` به `lib/api.ts`.
-- به‌روزرسانی درجا در `TanStack Query`.
+- مرتب‌سازی لیست بر اساس `id` نزولی (`b.id - a.id`) در `TaskList.tsx` برای حفظ جایگاه ردیف‌ها پس از ویرایش/رفرش و نمایش شناسه‌های پیوسته‌ی بدون فاصله (`tasks.length - index`).
+- به‌روزرسانی درجا و همگام‌سازی `404` در `TanStack Query`.
 
 **فعالیت‌های فنی (بک‌اند):**
 - افزودن `updateTaskSchema` به `task.validator.ts`.
 - افزودن کنترلرهای `updateTask` و `deleteTask`.
 - اتصال روت‌های `PUT /:id` و `DELETE /:id`.
-- به‌روزرسانی `createdAt` به زمان ویرایش (مرتب‌سازی نزولی).
+- به‌روزرسانی `createdAt` به زمان ویرایش (`new Date()`) برای ثبت آخرین زمان تغییر.
 - Hard Delete با `prisma.task.delete`.
 
 **تقسیم کار:**
@@ -75,7 +76,7 @@
 | پاسخ موفق | `200 OK` + شیء `Task` به‌روزشده (با `createdAt` جدید) |
 | خطاها | `400 TITLE_REQUIRED`، `400 TITLE_TOO_LONG`، `400 INVALID_INPUT`، `404 TASK_NOT_FOUND`، `500 SERVER_ERROR` |
 
-**نکته‌ی کلیدی:** فیلد `createdAt` هنگام ویرایش به `new Date()` به‌روزرسانی می‌شود تا وظیفه به بالای لیست (مرتب‌سازی نزولی) هدایت شود.
+**نکته‌ی کلیدی:** فیلد `createdAt` در بک‌اند هنگام ویرایش به `new Date()` به‌روزرسانی می‌شود تا زمان آخرین ویرایش در ستون تاریخ ثبت و نمایش داده شود؛ در سمت فرانت‌اند (`EditTaskModal` و `TaskList`) به‌روزرسانی به‌صورت درجا انجام شده و جدول بر اساس `id` نزولی (`b.id - a.id`) مرتب می‌ماند تا وظیفه‌ی ویرایش‌شده در همان ردیف قبلی خود بماند و نظم شناسه‌ها به‌هم نخورد.
 
 ### ۴.۲. حذف وظیفه — `DELETE /api/tasks/:id`
 
@@ -87,7 +88,7 @@
 | پاسخ موفق | `200 OK` + `{ "message": "TASK_DELETED", "id": number }` |
 | خطاها | `400 INVALID_INPUT`، `404 TASK_NOT_FOUND`، `500 SERVER_ERROR` |
 
-**نکته‌ی کلیدی:** حذف باید **قطعی، دائم و کامل (Hard Delete)** باشد. از Soft-Delete استفاده نمی‌شود.
+**نکته‌ی کلیدی:** حذف در بک‌اند باید **قطعی، دائم و کامل (Hard Delete)** باشد و از Soft-Delete استفاده نمی‌شود. در سمت فرانت‌اند، پس از حذف موفق، آیتم از کش حذف می‌شود تا شمارنده‌ی جدول کاهش یابد و شناسه‌های نمایشی در رابط کاربری (`tasks.length - index`) به‌صورت خودکار و پیوسته (`1, 2, 3, ...`) شماره‌گذاری شوند، بدون اینکه کلید اصلی (`id`) در PostgreSQL تغییر کند.
 
 ### ۴.۳. پایداری داده
 
@@ -122,10 +123,21 @@
 ### ✏️ فایل‌های فرانت‌اند
 | مسیر | تغییر |
 | :--- | :--- |
-| `frontend/frontend/components/TaskList.tsx` | اتصال ستون‌های ویرایش/حذف و مودال‌ها |
+| `frontend/frontend/components/TaskList.tsx` | اتصال ستون‌های ویرایش/حذف و مودال‌ها، مرتب‌سازی `b.id - a.id`، شناسه‌ی پیوسته‌ی `tasks.length - index` |
+| `frontend/frontend/components/EditTaskModal.tsx` | به‌روزرسانی درجای کش بدون تغییر ترتیب ردیف‌ها |
 | `frontend/frontend/app/[locale]/page.tsx` | گسترش عرض به `max-w-5xl` |
 | `frontend/frontend/lib/api.ts` | افزودن `updateTask` و `deleteTask` |
 | `frontend/frontend/messages/fa.json` و `en.json` | ترجمه‌های جدید |
+
+### 📄 فایل‌های مستندات (`docs/`)
+| مسیر | تغییر |
+| :--- | :--- |
+| `docs/01-api-contract.md` | افزودن `PUT` و `DELETE`، توضیح `StatusDropdown` و قوانین ترتیب/نمایش فرانت‌اند |
+| `docs/02-error-codes.md` | تفکیک خطاهای اسپرینت دوم و رفتار همگام‌سازی `404` در فرانت‌اند |
+| `docs/03-integration-guide.md` | به‌روزرسانی متدهای `lib/api.ts`، کش اسپرینت ۲ و چک‌لیست تست |
+| `docs/04-meetings-log.md` | افزودن جلسات ۵ تا ۸ اسپرینت دوم |
+| `docs/05-scrum-reports.md` | گزارش کامل اسکرام اسپرینت دوم (Backlog، Review، Retrospective) |
+| `docs/06-second sprint - reports and work to be done in the backend.md` | گزارش جامع اسپرینت دوم و راهنمای پیاده‌سازی |
 
 ---
 

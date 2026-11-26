@@ -26,7 +26,8 @@ export default function TaskList() {
     queryKey: ["tasks"],
     queryFn: async () => {
       const fetchedTasks = await getTasks();
-      return fetchedTasks;
+      // Sort by ID descending so edited tasks keep their position across refreshes
+      return [...fetchedTasks].sort((a, b) => b.id - a.id);
     },
   });
 
@@ -193,13 +194,13 @@ export default function TaskList() {
             </tr>
           </thead>
           <tbody>
-            {tasks.map((task: Task) => (
+            {tasks.map((task: Task, index: number) => (
               <tr
                 key={task.id}
                 className="border-b border-border hover:bg-primary-soft/50 transition-colors"
               >
                 <td className="py-3 px-4 text-sm text-text">
-                  {formatNumber(task.id)}
+                  {formatNumber(tasks.length - index)}
                 </td>
 
                 <td className="py-3 px-4 text-sm font-medium text-text">

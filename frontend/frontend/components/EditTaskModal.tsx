@@ -53,12 +53,9 @@ export default function EditTaskModal({ task, onClose }: EditTaskModalProps) {
           ...updatedTask,
           createdAt: updatedTask.createdAt || new Date().toISOString(),
         };
-        const updated = old.map((t) =>
+        // Update in-place so the edited task keeps its row position and ID order
+        return old.map((t) =>
           t.id === taskWithNewDate.id ? taskWithNewDate : t,
-        );
-        return updated.sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         );
       });
       onClose();
